@@ -12,7 +12,7 @@ helpers.startApp = function (done) {
   var host = helpers.options.serverHost || "127.0.0.1";
   var port = helpers.options.serverPort || 9250;
   var _this = this;
-  americano.start({name: 'template', 'host': host, 'port': port}, function (app, server) {
+  americano.start({name: 'template', 'host': host, 'port': port}, function (err, app, server) {
     _this.app = app;
     _this.app.server = server;
     done();
