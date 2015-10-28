@@ -1,10 +1,11 @@
 {
-  "name": "cozy-self-hosting",
+  "name": "self-hosting",
+  "icon-path": "client/app/assets/icons/main_icon.svg",
   "version": "1.0.0",
   "engines": [
     "node >= 0.10.0"
   ],
-  "description": "A template project for Cozy applications written in JavaScript",
+  "description": "An application to manage self hosted application on an Debian",
   "license": "MIT",
   "repository": {
     "type": "git",
