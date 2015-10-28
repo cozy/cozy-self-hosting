@@ -7,3 +7,6 @@ lint:
 
 test:
 	@$(BIN)/mocha ./tests --report spec --require should --colors
+
+server:
+	babel --stage 0 --optional 'runtime' ./src/server/ -d server/
