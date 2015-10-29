@@ -8,7 +8,8 @@ module.exports = {
     get: index.main
   },
   'debian/fqdn': {
-    post: debian.fqdn
+    get: debian.get_fqdn,
+    post: debian.update_fqdn
   }
 };
 
