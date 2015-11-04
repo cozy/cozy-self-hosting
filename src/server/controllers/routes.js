@@ -9,4 +9,3 @@ module.exports = {
     post: debian.update_fqdn
   }
 };
-

@@ -1,11 +1,7 @@
 #content
-  h1 Cozy template
-  h2 Welcome
-  ul
-    li
-      a(href="http://cozy.io/") Documentation
-    li
-        a(href="http://cozy.io/hack/getting-started/")
-          | Getting Started
-    li
-      a(href="https://github.com/cozy") Github
+h2 Self hosting
+div.cozy
+  form(name="cozy", action="./debian/fqdn", method="post")
+    input(type="text", name="fqdn")
+    input(type="button", value="refresh")
+    input(type="button", value="save")
