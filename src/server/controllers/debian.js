@@ -2,9 +2,12 @@ import Cozy          from '../models/cozyinstance';
 
 import {sendErr, asyncErr}      from '../helpers';
 
-export async function get_fqdn(req, res) {
-    let cozy = await Cozy.all();
-    let domain = cozy[0].domain;
+export function get_fqdn(req, res) {
+    let cozy = Cozy.all();
+    console.log(cozy);
+    // let domain = cozy[0].domain;
+    let domain = 'toto';
+    // console.log(domain);
 
     res.send(200, domain);
 }

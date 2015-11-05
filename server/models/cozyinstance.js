@@ -1,6 +1,6 @@
 'use strict';
 
-var _interopRequireWildcard = require('babel-runtime/helpers/interop-require-wildcard')['default'];
+var _interopRequireDefault = require('babel-runtime/helpers/interop-require-default')['default'];
 
 Object.defineProperty(exports, '__esModule', {
     value: true
@@ -8,17 +8,13 @@ Object.defineProperty(exports, '__esModule', {
 
 var _cozydb = require('cozydb');
 
-var americano = _interopRequireWildcard(_cozydb);
+var _cozydb2 = _interopRequireDefault(_cozydb);
 
-var _helpers = require('../helpers');
-
-var Cozy = americano.getModel('CozyInstance', {
+var Cozy = _cozydb2['default'].getModel('CozyInstance', {
     domain: String,
     helpUrl: String,
     locale: String
 });
-
-Cozy = (0, _helpers.promisifyModel)(Cozy);
 
 exports['default'] = Cozy;
 module.exports = exports['default'];

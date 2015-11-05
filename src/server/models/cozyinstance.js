@@ -1,12 +1,9 @@
-import * as americano from 'cozydb';
-import {promisify, promisifyModel} from '../helpers';
+import cozydb from 'cozydb';
 
-let Cozy = americano.getModel('CozyInstance', {
+const Cozy = cozydb.getModel('CozyInstance', {
     domain: String,
     helpUrl: String,
     locale: String
 });
-
-Cozy = promisifyModel(Cozy);
 
 export default Cozy;

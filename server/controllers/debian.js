@@ -17,24 +17,13 @@ var _modelsCozyinstance2 = _interopRequireDefault(_modelsCozyinstance);
 var _helpers = require('../helpers');
 
 function get_fqdn(req, res) {
-    var cozy, domain;
-    return _regeneratorRuntime.async(function get_fqdn$(context$1$0) {
-        while (1) switch (context$1$0.prev = context$1$0.next) {
-            case 0:
-                context$1$0.next = 2;
-                return _regeneratorRuntime.awrap(_modelsCozyinstance2['default'].all());
+    var cozy = _modelsCozyinstance2['default'].all();
+    console.log(cozy);
+    // let domain = cozy[0].domain;
+    var domain = 'toto';
+    // console.log(domain);
 
-            case 2:
-                cozy = context$1$0.sent;
-                domain = cozy[0].domain;
-
-                res.send(200, domain);
-
-            case 5:
-            case 'end':
-                return context$1$0.stop();
-        }
-    }, null, this);
+    res.send(200, domain);
 }
 
 function update_fqdn(req, res) {
