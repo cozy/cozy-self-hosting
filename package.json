@@ -30,6 +30,10 @@
     "test": "mocha tests/*.js",
     "start": "node server.js"
   },
-  "cozy-permissions": {},
+  "cozy-permissions": {
+      "CozyInstance": {
+          "description": "Used to read your cozy's domain"
+      }
+  },
   "cozy-displayName": "Self hosting"
 }
