@@ -15,7 +15,7 @@ export function update_fqdn(req, res) {
     if (!params.fqdn)
         return sendErr(res, "missing parameters", 400, "missing parameters");
 
-    child = exec('sudo /usr/share/cozy/debian-reconfigure-cozy-domain.sh "' + params.fqdn + '" > /tmp/debian-reconfigure-cozy-domain.txt',
+    child = exec('sudo /usr/local/sbin/debian-reconfigure-cozy-domain.sh "' + params.fqdn + '" > /tmp/debian-reconfigure-cozy-domain.txt',
                  function (error, stdout, stderr) {
         console.log('stdout: ' + stdout);
         console.log('stderr: ' + stderr);
