@@ -2,7 +2,6 @@
 
 'use strict';
 
-var index = require('./index');
 var debian = require('./debian');
 
 module.exports = {
