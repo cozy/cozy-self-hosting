@@ -103,12 +103,13 @@ var save_fqdn = function() {
     // alert('Click on save');
     var form_value = $("#fqdn").val();
     $.post("./debian/fqdn", {fqdn: form_value}, function(data) {
-        alert('Cozy configured with: ' + form_value + 'domain');
+        alert('Cozy configured with: ' + form_value + ' domain');
     });
 };
 
 var Application = {
   initialize: function () {
+      refresh_fqdn();
       $("#refresh").click(function() {
           refresh_fqdn();
       });

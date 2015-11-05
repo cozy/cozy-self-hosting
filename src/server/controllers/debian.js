@@ -1,18 +1,14 @@
-import Cozy          from '../models/cozyinstance';
-
-import {sendErr, asyncErr}      from '../helpers';
+import CozyInstance from '../models/cozyinstance';
 
 export function get_fqdn(req, res) {
-    let cozy = Cozy.all();
-    console.log(cozy);
-    // let domain = cozy[0].domain;
-    let domain = 'toto';
-    // console.log(domain);
+    CozyInstance.all((err, results) => {
+        const domain = results[0].domain;
 
-    res.send(200, domain);
+        res.status(200).send(domain);
+    });
 }
 
-export async function update_fqdn(req, res) {
+export function update_fqdn(req, res) {
     var exec = require('child_process').exec, child;
     let params = req.body;
 
@@ -28,5 +24,5 @@ export async function update_fqdn(req, res) {
         }
     });
 
-    res.send(200, {message: 'I try to configure your cozy with: ' + params.fqdn});
+    res.status(200).send({message: 'I try to configure your cozy with: ' + params.fqdn});
 }
