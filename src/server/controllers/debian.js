@@ -1,6 +1,7 @@
 import CozyInstance from '../models/cozyinstance';
 
 export function get_fqdn(req, res) {
+    // Get domain in CouchDB
     CozyInstance.all((err, results) => {
         const domain = results[0].domain;
 
@@ -9,12 +10,15 @@ export function get_fqdn(req, res) {
 }
 
 export function update_fqdn(req, res) {
+    // Get FQDN from user to configure cozy Debian Package
     var exec = require('child_process').exec, child;
     let params = req.body;
 
+    // Check if fqdn param exist & return an error if not
     if (!params.fqdn)
         return sendErr(res, "missing parameters", 400, "missing parameters");
 
+    // Exec reconfigure of package
     child = exec('sudo /usr/local/sbin/debian-reconfigure-cozy-domain.sh "' + params.fqdn + '" > /tmp/debian-reconfigure-cozy-domain.txt',
                  function (error, stdout, stderr) {
         console.log('stdout: ' + stdout);

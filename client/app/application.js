@@ -1,14 +1,15 @@
-// Application bootstrapper.
 var refresh_fqdn = function() {
-    // alert('Click on refresh');
+    // Get fqdn from CozyDB
     $.get("./debian/fqdn", function(data) {
+        // And update view
         $("#fqdn").val(data);
     });
 };
 
 var save_fqdn = function() {
-    // alert('Click on save');
+    // Get new value in input text
     var form_value = $("#fqdn").val();
+    // Push configuration
     $.post("./debian/fqdn", {fqdn: form_value}, function(data) {
         alert('Cozy configured with: ' + form_value + ' domain');
     });
