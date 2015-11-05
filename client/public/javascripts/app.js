@@ -132,18 +132,5 @@ $(function () {
 
 });
 
-require.register("views/templates/home", function(exports, require, module) {
-module.exports = function anonymous(locals, attrs, escape, rethrow, merge
-/**/) {
-attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
-var buf = [];
-with (locals || {}) {
-var interp;
-buf.push('<div id="content"></div><h2>Self hosting</h2><div class="cozy"><form name="cozy" action="./debian/fqdn" method="post"><input type="text" name="fqdn"/><input type="button" value="refresh"/><input type="button" value="save"/></form></div>');
-}
-return buf.join("");
-};
-});
-
 
 //# sourceMappingURL=app.js.map
