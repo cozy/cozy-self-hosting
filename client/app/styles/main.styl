@@ -4,16 +4,6 @@ body
   background: #91A2C0
   font: bold 18px "Helvetica Neue", Arial, Helvetica, sans-serif
 
-ul
-  list-style-type: none
-
-a, a:visited
-  color: #F95A5A
-  text-decoration: none
-
-a:hover
-  color: #665248
-
 #home-view
   width: 600px
   height: 200px
@@ -51,21 +41,10 @@ h2
 p
   margin: 0 0 1.5em
 
-a:focus, a:hover
-  color: #F95A5A
-  text-decoration: underline
-a
-  color: #F95A5A
-  text-decoration: none
-
-/* Lists */
-ul, ol
-  margin: 0 1.5em 1.5em 0
-  list-style-type: none
-
 /* Style */
 #content
-  width: 605px
+  width: 305px
+  text-align: center
   margin: 0 auto
   margin-top: 40px
   margin-bottom: 60px
@@ -86,3 +65,15 @@ h1
   padding-left: 373px
   color: #eee
   font-style: italic
+
+#input-fqdn
+  text-align: center
+
+#div-fqdn, #div-refresh, #div-reconfigure, #div-status-ok, #div-status-ko
+  margin-top: 10px
+
+#input-fqdn, #button-refresh, #button-reconfigure
+  width: 100%
+
+#div-status-ok, #div-status-ko
+  display: none

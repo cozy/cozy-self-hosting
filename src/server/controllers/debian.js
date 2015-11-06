@@ -15,18 +15,20 @@ export function update_fqdn(req, res) {
     let params = req.body;
 
     // Check if fqdn param exist & return an error if not
-    if (!params.fqdn)
-        return sendErr(res, "missing parameters", 400, "missing parameters");
+    if (!params.fqdn) {
 
-    // Exec reconfigure of package
-    child = exec('sudo /usr/local/sbin/debian-reconfigure-cozy-domain.sh "' + params.fqdn + '" > /tmp/debian-reconfigure-cozy-domain.txt',
-                 function (error, stdout, stderr) {
-        console.log('stdout: ' + stdout);
-        console.log('stderr: ' + stderr);
-        if (error !== null) {
-            console.log('exec error: ' + error);
-        }
-    });
+        res.status(400).send({message: "missing parameters"});
+    } else {
+        // Exec reconfigure of package
+        child = exec('sudo /usr/local/sbin/debian-reconfigure-cozy-domain.sh "' + params.fqdn + '" > /tmp/debian-reconfigure-cozy-domain.txt',
+                     function (error, stdout, stderr) {
+            console.log('stdout: ' + stdout);
+            console.log('stderr: ' + stderr);
+            if (error !== null) {
+                console.log('exec error: ' + error);
+            }
+        });
 
-    res.status(200).send({message: 'I try to configure your cozy with: ' + params.fqdn});
+        res.status(200).send({message: 'I reconfigure your cozy with: ' + params.fqdn});
+    }
 }

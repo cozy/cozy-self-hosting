@@ -28,13 +28,17 @@
 
         <div id="content">
         <h2>Self hosting</h2>
-          <div id="input-text">
-            <input type="text" id="fqdn" name="fqdn">
+          <div id="div-fqdn">
+            <input id="input-fqdn" type="text" id="fqdn" name="fqdn">
           </div>
-          <div id="input-button">
-            <input type="button" id="refresh" value="Refresh information from Cozy">
-            <input type="button" id="save" value="Save">
+          <div id="div-refresh">
+            <input type="button" id="button-refresh" class="btn btn-lg btn-default" value="Refresh information from Cozy">
           </div>
+          <div id="div-reconfigure">
+            <input type="button" id="button-reconfigure" class="btn btn-lg btn-danger" value="Reconfigure my Cozy">
+          </div>
+          <div id="div-status-ko" class="alert alert-danger" role="alert"></div>
+          <div id="div-status-ok" class="alert alert-success" role="alert"></div>
         </div>
 
         <script src="javascripts/vendor.js"></script>

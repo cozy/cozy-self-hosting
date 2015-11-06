@@ -91,30 +91,38 @@
   globals.require.brunch = true;
 })();
 require.register("application", function(exports, require, module) {
-// Application bootstrapper.
 var refresh_fqdn = function() {
-    // alert('Click on refresh');
+    // Get fqdn from CozyDB
     $.get("./debian/fqdn", function(data) {
-        $("#fqdn").val(data);
+        // And update view
+        $("#input-fqdn").val(data);
     });
 };
 
 var save_fqdn = function() {
-    // alert('Click on save');
-    var form_value = $("#fqdn").val();
+    // Get new value in input text
+    var form_value = $("#input-fqdn").val();
+    // Push configuration
     $.post("./debian/fqdn", {fqdn: form_value}, function(data) {
-        alert('Cozy configured with: ' + form_value + ' domain');
+        $("#div-status-ko").hide();
+        $("#div-status-ok").html(data.message);
+        $("#div-status-ok").show();
     });
 };
 
 var Application = {
   initialize: function () {
       refresh_fqdn();
-      $("#refresh").click(function() {
+      $("#button-refresh").click(function() {
           refresh_fqdn();
       });
-      $("#save").click(function() {
+      $("#button-reconfigure").click(function() {
           save_fqdn();
+      });
+      $(document).ajaxError(function(event, jqxhr, settings, thrownError) {
+        $("#div-status-ok").hide();
+        $("#div-status-ko").html(thrownError + ':<br/>\n' + jqxhr.responseText);
+        $("#div-status-ko").show();
       });
   }
 };
