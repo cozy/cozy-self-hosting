@@ -12,8 +12,7 @@ var save_fqdn = function() {
     // Push configuration
     $.post("./debian/fqdn", {fqdn: form_value}, function(data) {
         $("#div-status-ko").hide();
-        $("#div-status-ok").html(data.message);
-        $("#div-status-ok").show();
+        $("#div-status-ok").html(data.message).show();
     });
 };
 
@@ -28,8 +27,7 @@ var Application = {
       });
       $(document).ajaxError(function(event, jqxhr, settings, thrownError) {
         $("#div-status-ok").hide();
-        $("#div-status-ko").html(thrownError + ':<br/>\n' + jqxhr.responseText);
-        $("#div-status-ko").show();
+        $("#div-status-ko").html(thrownError + ':<br/>\n' + jqxhr.responseText).show();
       });
   }
 };
