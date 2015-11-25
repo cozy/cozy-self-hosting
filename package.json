@@ -9,7 +9,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/cozy-labs/cozy-self-hosting.git"
+    "url": "https://github.com/cozy/cozy-self-hosting.git"
   },
   "main": "server.js",
   "dependencies": {
