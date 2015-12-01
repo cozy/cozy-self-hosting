@@ -28,7 +28,8 @@
   },
   "scripts": {
     "test": "mocha tests/*.js",
-    "start": "node server.js"
+    "start": "node server.js",
+    "build": "make server"
   },
   "cozy-permissions": {
       "CozyInstance": {
