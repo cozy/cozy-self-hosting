@@ -11,7 +11,7 @@
     "type": "git",
     "url": "https://github.com/cozy/cozy-self-hosting.git"
   },
-  "main": "server.js",
+  "main": "server.es6",
   "dependencies": {
     "babel": "^5.8.23",
     "americano": "0.4.2",
@@ -27,8 +27,7 @@
   },
   "scripts": {
     "test": "mocha tests/*.js",
-    "start": "babel-node server.es6",
-    "build": "make server"
+    "start": "babel-node server.es6"
   },
   "cozy-permissions": {
     "CozyInstance": {
