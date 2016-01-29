@@ -1,3 +1,4 @@
+const fs = require('fs');
 const CozyInstance = require('../models/cozyinstance');
 
 module.exports.get_fqdn = (req, res) => {
@@ -11,17 +12,17 @@ module.exports.get_fqdn = (req, res) => {
 
 module.exports.update_fqdn = (req, res) => {
     // Get FQDN from user to configure cozy Debian Package
-    const fs = require('fs');
     var exec = require('child_process').exec, child;
+
     const params = req.body;
     const config_filename = '/etc/cozy/self-hosting.json';
     var reconfigure_script = '/usr/share/cozy/debian-reconfigure-cozy-domain.sh';
 
+    // Try to load config from reconfigure_script
     try {
-        fs.accessSync(config_filename, fs.F_OK);
-        console.log('Config filename: ' + config_filename);
         const config = require(config_filename);
         reconfigure_script = config.reconfigure_script;
+        console.log('Config filename: ' + config_filename);
     } catch (e) {
         console.log('Missing config filename: ' + config_filename);
     }
@@ -34,8 +35,9 @@ module.exports.update_fqdn = (req, res) => {
         res.status(400).send({message: "missing parameters"});
     } else {
         // Exec reconfigure of package
-        child = exec('sudo ' + reconfigure_script + ' "' + params.fqdn + '" > /tmp/debian-reconfigure-cozy-domain.txt',
-                     function (error, stdout, stderr) {
+        var reconfigure_command = 'sudo ' + reconfigure_script + ' "' + params.fqdn + '" > /tmp/debian-reconfigure-cozy-domain.txt';
+        console.log(reconfigure_command);
+        child = exec(reconfigure_command, function (error, stdout, stderr) {
             console.log('stdout: ' + stdout);
             console.log('stderr: ' + stderr);
             if (error !== null) {
