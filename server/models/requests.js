@@ -1,5 +1,4 @@
-'use strict';
+const cozydb = require('cozydb');
 
-var cozydb = require('cozydb');
-
-module.exports = {};
+module.exports = {
+};

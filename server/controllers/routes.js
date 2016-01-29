@@ -1,7 +1,5 @@
 // See documentation on https://github.com/frankrousseau/americano#routes
 
-'use strict';
-
 var debian = require('./debian');
 
 module.exports = {
