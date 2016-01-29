@@ -34,8 +34,7 @@ module.exports.update_fqdn = (req, res) => {
         res.status(400).send({message: "missing parameters"});
     } else {
         // Exec reconfigure of package
-        // child = exec('sudo /usr/share/cozy/debian-reconfigure-cozy-domain.sh "' + params.fqdn + '" > /tmp/debian-reconfigure-cozy-domain.txt',
-        child = exec('sudo /tmp/debian-reconfigure-cozy-domain.sh "' + params.fqdn + '" > /tmp/debian-reconfigure-cozy-domain.txt',
+        child = exec('sudo ' + reconfigure_script + ' "' + params.fqdn + '" > /tmp/debian-reconfigure-cozy-domain.txt',
                      function (error, stdout, stderr) {
             console.log('stdout: ' + stdout);
             console.log('stderr: ' + stderr);
