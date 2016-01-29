@@ -11,8 +11,21 @@ module.exports.get_fqdn = (req, res) => {
 
 module.exports.update_fqdn = (req, res) => {
     // Get FQDN from user to configure cozy Debian Package
+    const fs = require('fs');
     var exec = require('child_process').exec, child;
     const params = req.body;
+    const config_filename = '/etc/cozy/self-hosting.json';
+    var reconfigure_script = '/usr/share/cozy/debian-reconfigure-cozy-domain.sh';
+
+    try {
+        fs.accessSync(config_filename, fs.F_OK);
+        console.log('Config filename: ' + config_filename);
+        const config = require(config_filename);
+        reconfigure_script = config.reconfigure_script;
+    } catch (e) {
+        console.log('Missing config filename: ' + config_filename);
+    }
+    console.log('Reconfigure script: ' + reconfigure_script);
 
 
     // Check if fqdn param exist & return an error if not
