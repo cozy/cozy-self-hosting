@@ -1,4 +1,4 @@
-import CozyInstance from '../models/cozyinstance';
+const CozyInstance = require('../models/cozyinstance');
 
 module.exports.get_fqdn = (req, res) => {
     // Get domain in CouchDB

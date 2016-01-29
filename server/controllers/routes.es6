@@ -5,6 +5,6 @@ const debian = require('./debian');
 module.exports = {
   'debian/fqdn': {
     get: debian.get_fqdn,
-    post: debian.update_fqdn
-  }
+    post: debian.update_fqdn,
+  },
 };

@@ -1,4 +1,4 @@
-import cozydb from 'cozydb';
+const cozydb = require('cozydb');
 
 const Cozy = cozydb.getModel('CozyInstance', {
     domain: String,
