@@ -7,7 +7,7 @@ module.exports.get_fqdn = (req, res) => {
 
         res.status(200).send(domain);
     });
-}
+};
 
 module.exports.update_fqdn = (req, res) => {
     // Get FQDN from user to configure cozy Debian Package
@@ -45,4 +45,4 @@ module.exports.update_fqdn = (req, res) => {
 
         res.status(200).send({message: 'I reconfigure your cozy with: ' + params.fqdn});
     }
-}
+};
