@@ -1,6 +1,6 @@
 // See documentation on https://github.com/frankrousseau/americano#routes
 
-import * as debian from './debian';
+var debian = require('./debian');
 
 module.exports = {
   'debian/fqdn': {
