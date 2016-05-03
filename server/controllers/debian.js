@@ -8,7 +8,7 @@ module.exports.get_fqdn = (req, res) => {
             console.log("module.exports.get_fqdn:ERR:", err);
             res.status(500).send({ message: "Unable to get the current FQDN" });
         } else {
-                console.log("module.exports.get_fqdn:results:", results);
+            console.log("module.exports.get_fqdn:results:", results);
             if (typeof results !== 'undefined') {
                 const domain = results[0].domain;
                 console.log("module.exports.get_fqdn:OK:", domain);

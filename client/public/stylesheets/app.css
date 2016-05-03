@@ -60,7 +60,7 @@ p {
 }
 /* Style */
 #content {
-  width: 305px;
+  width: 90%;
   text-align: center;
   margin: 0 auto;
   margin-top: 40px;
@@ -96,7 +96,9 @@ h1 {
 }
 #input-fqdn,
 #button-refresh,
-#button-reconfigure {
+#button-reconfigure,
+#button-halt,
+#button-reboot {
   width: 100%;
 }
 #div-status-ok,
