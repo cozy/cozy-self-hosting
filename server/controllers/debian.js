@@ -4,27 +4,15 @@ const CozyInstance = require('../models/cozyinstance');
 module.exports.get_fqdn = (req, res) => {
     // Get domain in CouchDB
     CozyInstance.all((err, results) => {
-        if (err) {
-            console.log("module.exports.get_fqdn:ERR:", err);
-            res.status(500).send({ message: "Unable to get the current FQDN" });
-        } else {
-                console.log("module.exports.get_fqdn:results:", results);
-            if (typeof results !== 'undefined') {
-                const domain = results[0].domain;
-                console.log("module.exports.get_fqdn:OK:", domain);
-                res.status(200).send(domain);
-            } else {
-                console.log("module.exports.get_fqdn:ERR:error");
-                res.status(500).send({ message: "Unable to get the current FQDN" });
-            }
-        }
+        const domain = results[0].domain;
+
+        res.status(200).send(domain);
     });
 };
 
 module.exports.update_fqdn = (req, res) => {
     // Get FQDN from user to configure cozy Debian Package
-    var exec = require('child_process').exec,
-        child;
+    var exec = require('child_process').exec, child;
 
     const params = req.body;
     const config_filename = '/etc/cozy/self-hosting.json';
@@ -40,10 +28,11 @@ module.exports.update_fqdn = (req, res) => {
     }
     console.log('Reconfigure script: ' + reconfigure_script);
 
+
     // Check if fqdn param exist & return an error if not
     if (!params.fqdn) {
 
-        res.status(400).send({ message: "missing parameters" });
+        res.status(400).send({message: "missing parameters"});
     } else {
         // Exec reconfigure of package
         var reconfigure_command = 'sudo ' + reconfigure_script + ' "' + params.fqdn + '" > /tmp/debian-reconfigure-cozy-domain.txt';
@@ -56,44 +45,6 @@ module.exports.update_fqdn = (req, res) => {
             }
         });
 
-        res.status(200).send({ message: 'I reconfigure your cozy with: ' + params.fqdn });
+        res.status(200).send({message: 'I reconfigure your cozy with: ' + params.fqdn});
     }
-};
-
-module.exports.host_halt = (req, res) => {
-    // halt the host
-
-    var exec = require('child_process').exec,
-        child;
-
-    var reconfigure_command = 'sudo halt';
-    console.log("module.exports.host_halt:", reconfigure_command);
-    child = exec(reconfigure_command, function (error, stdout, stderr) {
-        console.log('stdout: ' + stdout);
-        console.log('stderr: ' + stderr);
-        if (error !== null) {
-            console.log('exec error: ' + error);
-        }
-    });
-
-    res.status(200).send({ message: 'This host has been halted !' });
-};
-
-module.exports.host_reboot = (req, res) => {
-    // reboot the host
-
-    var exec = require('child_process').exec,
-        child;
-
-    var reconfigure_command = 'sudo shutdown -r now';
-    console.log("module.exports.host_reboot:", reconfigure_command);
-    child = exec(reconfigure_command, function (error, stdout, stderr) {
-        console.log('stdout: ' + stdout);
-        console.log('stderr: ' + stderr);
-        if (error !== null) {
-            console.log('exec error: ' + error);
-        }
-    });
-
-    res.status(200).send({ message: 'This host has been rebooted !' });
 };
