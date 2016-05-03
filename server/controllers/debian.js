@@ -70,7 +70,20 @@ module.exports.host_halt = (req, res) => {
     var exec = require('child_process').exec,
         child;
 
-    var halt_command = 'sudo halt';
+    const config_filename = '/etc/cozy/self-hosting.json';
+    var halt_script = '/usr/local/sbin/debian-halt.sh';
+
+    // Try to load config from config file
+    try {
+        const config = require(config_filename);
+        halt_script = config.halt_script;
+        console.log('Config filename: ' + config_filename);
+    } catch (e) {
+        console.log('Missing config filename: ' + config_filename);
+    }
+    console.log('Reconfigure script: ' + halt_script);
+
+    var halt_command = 'sudo ' + halt_script + ' halt > /dev/null';
     console.log("module.exports.host_halt:", halt_command);
     child = exec(halt_command, function (error, stdout, stderr) {
         console.log('stdout: ' + stdout);
@@ -89,8 +102,22 @@ module.exports.host_reboot = (req, res) => {
     var exec = require('child_process').exec,
         child;
 
-    var reboot_command = 'sudo shutdown -r now';
-    console.log("module.exports.host_reboot:", reboot_command);
+    const config_filename = '/etc/cozy/self-hosting.json';
+    var halt_script = '/usr/local/sbin/debian-halt.sh';
+
+    // Try to load config from config file
+    try {
+        const config = require(config_filename);
+        halt_script = config.halt_script;
+        console.log('Config filename: ' + config_filename);
+    } catch (e) {
+        console.log('Missing config filename: ' + config_filename);
+    }
+    console.log('Reconfigure script: ' + halt_script);
+
+    var halt_command = 'sudo ' + halt_script + ' reboot > /dev/null';
+    console.log("module.exports.host_halt:", halt_command);
+
     child = exec(reboot_command, function (error, stdout, stderr) {
         console.log('stdout: ' + stdout);
         console.log('stderr: ' + stderr);
