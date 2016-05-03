@@ -115,8 +115,8 @@ module.exports.host_reboot = (req, res) => {
     }
     console.log('Reconfigure script: ' + halt_script);
 
-    var halt_command = 'sudo ' + halt_script + ' reboot > /dev/null';
-    console.log("module.exports.host_halt:", halt_command);
+    var reboot_command = 'sudo ' + halt_script + ' reboot > /dev/null';
+    console.log("module.exports.host_reboot:", reboot_command);
 
     child = exec(reboot_command, function (error, stdout, stderr) {
         console.log('stdout: ' + stdout);
