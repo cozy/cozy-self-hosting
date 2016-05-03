@@ -12,7 +12,7 @@ module.exports.get_fqdn = (req, res) => {
             if (typeof results !== 'undefined') {
                 const domain = results[0].domain;
                 console.log("module.exports.get_fqdn:OK:", domain);
-                if (typeof results !== 'undefined') {
+                if (typeof domain !== 'undefined') {
                     res.status(200).send(domain);
                 } else {
                     res.status(500).send({ message: "Unable to get the current FQDN : cozy domain is undefined" });
