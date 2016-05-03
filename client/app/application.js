@@ -70,7 +70,6 @@ var Application = {
       $(document).ajaxError(function(event, jqxhr, settings, thrownError) {
         $("#div-status-ok").hide();
 		var data = JSON.parse(jqxhr.responseText);
-		console.log(data);
 		if (data.message) {
 			$("#div-status-ko").html(thrownError + ':<br/>\n' + data.message).show();
 		} else {

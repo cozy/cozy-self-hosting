@@ -12,7 +12,11 @@ module.exports.get_fqdn = (req, res) => {
             if (typeof results !== 'undefined') {
                 const domain = results[0].domain;
                 console.log("module.exports.get_fqdn:OK:", domain);
-                res.status(200).send(domain);
+                if (typeof results !== 'undefined') {
+                    res.status(200).send(domain);
+                } else {
+                    res.status(500).send({ message: "Unable to get the current FQDN : cozy domain is undefined" });
+                }
             } else {
                 console.log("module.exports.get_fqdn:ERR:error");
                 res.status(500).send({ message: "Unable to get the current FQDN" });
@@ -66,9 +70,9 @@ module.exports.host_halt = (req, res) => {
     var exec = require('child_process').exec,
         child;
 
-    var reconfigure_command = 'sudo halt';
-    console.log("module.exports.host_halt:", reconfigure_command);
-    child = exec(reconfigure_command, function (error, stdout, stderr) {
+    var halt_command = 'sudo halt';
+    console.log("module.exports.host_halt:", halt_command);
+    child = exec(halt_command, function (error, stdout, stderr) {
         console.log('stdout: ' + stdout);
         console.log('stderr: ' + stderr);
         if (error !== null) {
@@ -85,9 +89,9 @@ module.exports.host_reboot = (req, res) => {
     var exec = require('child_process').exec,
         child;
 
-    var reconfigure_command = 'sudo shutdown -r now';
-    console.log("module.exports.host_reboot:", reconfigure_command);
-    child = exec(reconfigure_command, function (error, stdout, stderr) {
+    var reboot_command = 'sudo shutdown -r now';
+    console.log("module.exports.host_reboot:", reboot_command);
+    child = exec(reboot_command, function (error, stdout, stderr) {
         console.log('stdout: ' + stdout);
         console.log('stderr: ' + stderr);
         if (error !== null) {
