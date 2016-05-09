@@ -15,3 +15,7 @@ chmod 440 /etc/sudoers.d/cozy-self-hosting
 
 chown root:root /etc/cozy/self-hosting.json
 chmod 644 /etc/cozy/self-hosting.json
+
+chmod +x /usr/local/sbin/debian-reconfigure-cozy-domain.sh
+chmod +x /usr/local/sbin/debian-halt.sh
+chmod +x /usr/local/sbin/debian-reboot.sh
