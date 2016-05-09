@@ -37,7 +37,9 @@ module.exports.update_fqdn = (req, res) => {
     // Try to load config from reconfigure_script
     try {
         const config = require(config_filename);
-        reconfigure_script = config.reconfigure_script;
+        if (typeof config.reconfigure_script !== 'undefined') {
+            reconfigure_script = config.reconfigure_script;
+        }
         console.log('Config filename: ' + config_filename);
     } catch (e) {
         console.log('Missing config filename: ' + config_filename + ' or "reconfigure_script" parameter is not defined.');
@@ -91,7 +93,9 @@ module.exports.host_halt = (req, res) => {
         // Try to load config from config file
         try {
             const config = require(config_filename);
-            halt_script = config.halt_script;
+            if (typeof config.halt_script !== 'undefined') {
+                halt_script = config.halt_script;
+            }
             console.log('Config filename: ' + config_filename);
         } catch (e) {
             console.log('Missing config filename: ' + config_filename + ' or "halt_script" parameter is not defined.');
@@ -129,7 +133,9 @@ module.exports.host_reboot = (req, res) => {
         // Try to load config from config file
         try {
             const config = require(config_filename);
-            reboot_script = config.reboot_script;
+            if (typeof config.reboot_script !== 'undefined') {
+                reboot_script = config.reboot_script;
+            }
             console.log('Config filename: ' + config_filename);
         } catch (e) {
             console.log('Missing config filename: ' + config_filename + ' or "reboot_script" parameter is not defined.');
