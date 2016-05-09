@@ -102,16 +102,22 @@ module.exports.host_halt = (req, res) => {
         }
         console.log('Reconfigure script: ' + halt_script);
 
-        var halt_command = 'sudo ' + halt_script + ' > /dev/null';
-        console.log("module.exports.host_halt:", halt_command);
-        child = exec(halt_command, function (error, stdout, stderr) {
-            console.log('stdout: ' + stdout);
-            console.log('stderr: ' + stderr);
-            if (error !== null) {
-                console.log('exec error: ' + error);
+        fs.access(halt_script, fs.X_OK, function (err) {
+            if (!err) {
+                var halt_command = 'sudo ' + halt_script + ' > /dev/null';
+                console.log("module.exports.host_halt:", halt_command);
+                child = exec(halt_command, function (error, stdout, stderr) {
+                    console.log('stdout: ' + stdout);
+                    console.log('stderr: ' + stderr);
+                    if (error !== null) {
+                        console.log('exec error: ' + error);
+                    }
+                });
+                res.status(200).send({ message: 'This host has been halted !' });
+            } else {
+                res.status(500).send({ message: 'The script "' + halt_script + '" does not exist, is the app correctly installed ?' });
             }
         });
-        res.status(200).send({ message: 'This host has been halted !' });
     } else {
         res.status(500).send({ message: 'This host is not self-hosted, could not shut it down !' });
     }
@@ -142,18 +148,24 @@ module.exports.host_reboot = (req, res) => {
         }
         console.log('Reconfigure script: ' + reboot_script);
 
-        var reboot_command = 'sudo ' + reboot_script + ' > /dev/null';
-        console.log("module.exports.host_reboot:", reboot_command);
+        fs.access(reboot_script, fs.X_OK, function (err) {
+            if (!err) {
+                var reboot_command = 'sudo ' + reboot_script + ' > /dev/null';
+                console.log("module.exports.host_reboot:", reboot_command);
 
-        child = exec(reboot_command, function (error, stdout, stderr) {
-            console.log('stdout: ' + stdout);
-            console.log('stderr: ' + stderr);
-            if (error !== null) {
-                console.log('exec error: ' + error);
+                child = exec(reboot_command, function (error, stdout, stderr) {
+                    console.log('stdout: ' + stdout);
+                    console.log('stderr: ' + stderr);
+                    if (error !== null) {
+                        console.log('exec error: ' + error);
+                    }
+                });
+
+                res.status(200).send({ message: 'This host has been rebooted !' });
+            } else {
+                res.status(500).send({ message: 'The script "' + reboot_script + '" does not exist, is the app correctly installed ?' });
             }
         });
-
-        res.status(200).send({ message: 'This host has been rebooted !' });
     } else {
         res.status(500).send({ message: 'This host is not self-hosted, could not reboot it !' });
     }
