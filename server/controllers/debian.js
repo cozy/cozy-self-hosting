@@ -120,37 +120,35 @@ module.exports.host_reboot = (req, res) => {
 
     if (typeof isVPS === 'undefined' || isVPS === false) {
 
-		var exec = require('child_process').exec,
-			child;
+        var exec = require('child_process').exec,
+            child;
 
-		const config_filename = '/etc/cozy/self-hosting.json';
-		var reboot_script = '/usr/local/sbin/debian-reboot.sh';
+        const config_filename = '/etc/cozy/self-hosting.json';
+        var reboot_script = '/usr/local/sbin/debian-reboot.sh';
 
-		// Try to load config from config file
-		try {
-			const config = require(config_filename);
-			reboot_script = config.reboot_script;
-			console.log('Config filename: ' + config_filename);
-		} catch (e) {
-			console.log('Missing config filename: ' + config_filename + ' or "reboot_script" parameter is not defined.');
-		}
-		console.log('Reconfigure script: ' + reboot_script);
+        // Try to load config from config file
+        try {
+            const config = require(config_filename);
+            reboot_script = config.reboot_script;
+            console.log('Config filename: ' + config_filename);
+        } catch (e) {
+            console.log('Missing config filename: ' + config_filename + ' or "reboot_script" parameter is not defined.');
+        }
+        console.log('Reconfigure script: ' + reboot_script);
 
-		var reboot_command = 'sudo ' + reboot_script + ' > /dev/null';
-		console.log("module.exports.host_reboot:", reboot_command);
+        var reboot_command = 'sudo ' + reboot_script + ' > /dev/null';
+        console.log("module.exports.host_reboot:", reboot_command);
 
-		child = exec(reboot_command, function (error, stdout, stderr) {
-			console.log('stdout: ' + stdout);
-			console.log('stderr: ' + stderr);
-			if (error !== null) {
-				console.log('exec error: ' + error);
-			}
-		});
+        child = exec(reboot_command, function (error, stdout, stderr) {
+            console.log('stdout: ' + stdout);
+            console.log('stderr: ' + stderr);
+            if (error !== null) {
+                console.log('exec error: ' + error);
+            }
+        });
 
-		res.status(200).send({ message: 'This host has been rebooted !' });
-
+        res.status(200).send({ message: 'This host has been rebooted !' });
     } else {
         res.status(500).send({ message: 'This host is not self-hosted, could not reboot it !' });
     }
-
 };
