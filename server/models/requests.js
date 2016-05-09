@@ -1,4 +1,3 @@
 const cozydb = require('cozydb');
 
-module.exports = {
-};
+module.exports = {};

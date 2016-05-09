@@ -105,6 +105,9 @@ h1 {
 #div-status-ko {
   display: none;
 }
+#button-halt-reboot-div {
+  display: none;
+}
 
 
 /*# sourceMappingURL=app.css.map*/

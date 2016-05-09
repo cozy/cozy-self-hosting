@@ -34,8 +34,18 @@ var host_reboot = function() {
     });
 };
 
+var show_halt_reboot_buttons = function() {
+    // Get fqdn from CozyDB
+    $.get("./debian/host/isvps", function(data) {
+        if (data.isVPS === false) {
+			$("#button-halt-reboot-div").show();
+        }
+    });
+};
+
 var Application = {
   initialize: function () {
+	  show_halt_reboot_buttons();
       refresh_fqdn();
       $("#button-refresh").click(function() {
           refresh_fqdn();
@@ -48,7 +58,7 @@ var Application = {
 		"title": "Do you really want to halt the host ?",
 		"btnOkClass": "btn-danger",
 		"btnCancelClass": "btn-info",
-		"btnOkLabel": "HALT",
+		"btnOkLabel": "SHUTDOWN",
 		"btnCancelLabel": "CANCEL",
 		"placement": "bottom",
 		"popout": true,

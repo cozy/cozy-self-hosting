@@ -32,7 +32,7 @@ module.exports.update_fqdn = (req, res) => {
 
     const params = req.body;
     const config_filename = '/etc/cozy/self-hosting.json';
-    var reconfigure_script = '/usr/share/cozy/debian-reconfigure-cozy-domain.sh';
+    var reconfigure_script = '/usr/local/sbin/debian-reconfigure-cozy-domain.sh';
 
     // Try to load config from reconfigure_script
     try {
@@ -40,7 +40,7 @@ module.exports.update_fqdn = (req, res) => {
         reconfigure_script = config.reconfigure_script;
         console.log('Config filename: ' + config_filename);
     } catch (e) {
-        console.log('Missing config filename: ' + config_filename);
+        console.log('Missing config filename: ' + config_filename + ' or "reconfigure_script" parameter is not defined.');
     }
     console.log('Reconfigure script: ' + reconfigure_script);
 
@@ -64,67 +64,93 @@ module.exports.update_fqdn = (req, res) => {
     }
 };
 
+module.exports.is_vps = (req, res) => {
+    var isVPS = process.env.MANAGED;
+
+    if (typeof isVPS === 'undefined' || isVPS === false) {
+        console.log('is_vps: false');
+        res.status(200).send({ isVPS: false });
+    } else {
+        console.log('is_vps: true');
+        res.status(200).send({ isVPS: true });
+    }
+};
+
 module.exports.host_halt = (req, res) => {
     // halt the host
 
-    var exec = require('child_process').exec,
-        child;
+    var isVPS = process.env.MANAGED;
 
-    const config_filename = '/etc/cozy/self-hosting.json';
-    var halt_script = '/usr/local/sbin/debian-halt.sh';
+    if (typeof isVPS === 'undefined' || isVPS === false) {
+        var exec = require('child_process').exec,
+            child;
 
-    // Try to load config from config file
-    try {
-        const config = require(config_filename);
-        halt_script = config.halt_script;
-        console.log('Config filename: ' + config_filename);
-    } catch (e) {
-        console.log('Missing config filename: ' + config_filename);
-    }
-    console.log('Reconfigure script: ' + halt_script);
+        const config_filename = '/etc/cozy/self-hosting.json';
+        var halt_script = '/usr/local/sbin/debian-halt.sh';
 
-    var halt_command = 'sudo ' + halt_script + ' halt > /dev/null';
-    console.log("module.exports.host_halt:", halt_command);
-    child = exec(halt_command, function (error, stdout, stderr) {
-        console.log('stdout: ' + stdout);
-        console.log('stderr: ' + stderr);
-        if (error !== null) {
-            console.log('exec error: ' + error);
+        // Try to load config from config file
+        try {
+            const config = require(config_filename);
+            halt_script = config.halt_script;
+            console.log('Config filename: ' + config_filename);
+        } catch (e) {
+            console.log('Missing config filename: ' + config_filename + ' or "halt_script" parameter is not defined.');
         }
-    });
+        console.log('Reconfigure script: ' + halt_script);
 
-    res.status(200).send({ message: 'This host has been halted !' });
+        var halt_command = 'sudo ' + halt_script + ' > /dev/null';
+        console.log("module.exports.host_halt:", halt_command);
+        child = exec(halt_command, function (error, stdout, stderr) {
+            console.log('stdout: ' + stdout);
+            console.log('stderr: ' + stderr);
+            if (error !== null) {
+                console.log('exec error: ' + error);
+            }
+        });
+        res.status(200).send({ message: 'This host has been halted !' });
+    } else {
+        res.status(500).send({ message: 'This host is not self-hosted, could not shut it down !' });
+    }
 };
 
 module.exports.host_reboot = (req, res) => {
     // reboot the host
 
-    var exec = require('child_process').exec,
-        child;
+    var isVPS = process.env.MANAGED;
 
-    const config_filename = '/etc/cozy/self-hosting.json';
-    var halt_script = '/usr/local/sbin/debian-halt.sh';
+    if (typeof isVPS === 'undefined' || isVPS === false) {
 
-    // Try to load config from config file
-    try {
-        const config = require(config_filename);
-        halt_script = config.halt_script;
-        console.log('Config filename: ' + config_filename);
-    } catch (e) {
-        console.log('Missing config filename: ' + config_filename);
+		var exec = require('child_process').exec,
+			child;
+
+		const config_filename = '/etc/cozy/self-hosting.json';
+		var reboot_script = '/usr/local/sbin/debian-reboot.sh';
+
+		// Try to load config from config file
+		try {
+			const config = require(config_filename);
+			reboot_script = config.reboot_script;
+			console.log('Config filename: ' + config_filename);
+		} catch (e) {
+			console.log('Missing config filename: ' + config_filename + ' or "reboot_script" parameter is not defined.');
+		}
+		console.log('Reconfigure script: ' + reboot_script);
+
+		var reboot_command = 'sudo ' + reboot_script + ' > /dev/null';
+		console.log("module.exports.host_reboot:", reboot_command);
+
+		child = exec(reboot_command, function (error, stdout, stderr) {
+			console.log('stdout: ' + stdout);
+			console.log('stderr: ' + stderr);
+			if (error !== null) {
+				console.log('exec error: ' + error);
+			}
+		});
+
+		res.status(200).send({ message: 'This host has been rebooted !' });
+
+    } else {
+        res.status(500).send({ message: 'This host is not self-hosted, could not reboot it !' });
     }
-    console.log('Reconfigure script: ' + halt_script);
 
-    var reboot_command = 'sudo ' + halt_script + ' reboot > /dev/null';
-    console.log("module.exports.host_reboot:", reboot_command);
-
-    child = exec(reboot_command, function (error, stdout, stderr) {
-        console.log('stdout: ' + stdout);
-        console.log('stderr: ' + stderr);
-        if (error !== null) {
-            console.log('exec error: ' + error);
-        }
-    });
-
-    res.status(200).send({ message: 'This host has been rebooted !' });
 };

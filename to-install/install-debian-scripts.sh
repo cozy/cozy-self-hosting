@@ -6,6 +6,7 @@ cozy-monitor install ${APP_NAME} -r https://github.com/cozy/cozy-self-hosting.gi
 
 cp ${SOURCE_DIR}/debian-reconfigure-cozy-domain.sh /usr/local/sbin/debian-reconfigure-cozy-domain.sh
 cp ${SOURCE_DIR}/debian-halt.sh /usr/local/sbin/debian-halt.sh
+cp ${SOURCE_DIR}/debian-reboot.sh /usr/local/sbin/debian-reboot.sh
 cp ${SOURCE_DIR}/sudoers.d_cozy-self-hosting /etc/sudoers.d/cozy-self-hosting
 cp ${SOURCE_DIR}/self-hosting.json /etc/cozy/self-hosting.json
 

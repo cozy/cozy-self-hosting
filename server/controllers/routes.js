@@ -12,5 +12,9 @@ module.exports = {
   },
   'debian/host/reboot': {
     get: debian.host_reboot
+  },
+  'debian/host/isvps': {
+    get: debian.is_vps
   }
+
 };
