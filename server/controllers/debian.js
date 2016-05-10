@@ -241,9 +241,9 @@ module.exports.database_maintenance = (req, res) => {
                 }
             });
 
-            res.status(200).send({ message: 'Database maintenance operation "' + req.params.option + '" is running...' });
+            //res.status(200).send({ message: 'Database maintenance operation "' + req.params.option + '" is running...' });
         } else {
-            res.status(500).send({ message: 'The script "' + database_script + '" does not exist, is the app correctly installed ?' });
-        }
+                res.status(500).send({ message: 'The script "' + database_script + '" does not exist, is the app correctly installed ?' });
+            }
     });
 };

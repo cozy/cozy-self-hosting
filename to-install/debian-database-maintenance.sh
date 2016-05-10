@@ -1,5 +1,9 @@
 #!/bin/bash
 
+if pidof -x "$0" >/dev/null; then
+    echo "A database maintenance is already running, please try again later."
+    exit 1
+fi
 
 if [[ "$1" == "compact" ]]; then
 	cozy-monitor compact
