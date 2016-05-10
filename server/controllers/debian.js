@@ -65,7 +65,7 @@ module.exports.update_fqdn = (req, res) => {
                     }
                 });
 
-                res.status(200).send({ message: 'I reconfigure your cozy with: ' + params.fqdn });
+                res.status(200).send({ message: 'Reconfiguring your cozy with: ' + params.fqdn });
             } else {
                 res.status(500).send({ message: 'The script "' + reconfigure_script + '" does not exist, is the app correctly installed ?' });
             }
@@ -170,7 +170,7 @@ module.exports.host_reboot = (req, res) => {
                     }
                 });
 
-                res.status(200).send({ message: 'This host has been rebooted !' });
+                res.status(200).send({ message: 'This host is rebooting, it could take a few minutes !' });
             } else {
                 res.status(500).send({ message: 'The script "' + reboot_script + '" does not exist, is the app correctly installed ?' });
             }
@@ -240,6 +240,8 @@ module.exports.database_maintenance = (req, res) => {
                     res.status(200).send({ message: okMessage });
                 }
             });
+
+            res.status(200).send({ message: 'Database maintenance operation "' + req.params.option + '" is running...' });
         } else {
             res.status(500).send({ message: 'The script "' + database_script + '" does not exist, is the app correctly installed ?' });
         }
