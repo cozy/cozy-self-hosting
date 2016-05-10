@@ -1,5 +1,6 @@
 {
     "reconfigure_script": "/usr/local/sbin/debian-reconfigure-cozy-domain.sh",
     "halt_script": "/usr/local/sbin/debian-halt.sh",
-    "reboot_script": "/usr/local/sbin/debian-reboot.sh"
+    "reboot_script": "/usr/local/sbin/debian-reboot.sh",
+    "database_script": "/usr/local/sbin/debian-database-maintenance.sh"
 }

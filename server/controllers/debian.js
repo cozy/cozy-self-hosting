@@ -173,21 +173,38 @@ module.exports.host_reboot = (req, res) => {
 
 module.exports.database_maintenance = (req, res) => {
     console.log("database_maintenance:option:" + req.params.option);
-    var database_command = "sudo";
+    var database_command = "sudo ";
     var okMessage = "";
+
+    const config_filename = '/etc/cozy/self-hosting.json';
+    var database_script = '/usr/local/sbin/debian-database-maintenance.sh';
+
+    // Try to load config from config file
+    try {
+        const config = require(config_filename);
+        if (typeof config.database_script !== 'undefined') {
+            database_script = config.database_script;
+        }
+        console.log('Config filename: ' + config_filename);
+    } catch (e) {
+        console.log('Missing config filename: ' + config_filename + ' or "database_script" parameter is not defined.');
+    }
+    console.log('Reconfigure script: ' + database_script);
+
+    database_command += database_script;
 
     if (typeof req.params.option !== 'undefined') {
         switch (req.params.option) {
             case "compact":
-                database_command += " cozy-monitor compact 2>&1";
+                database_command += " compact";
                 okMessage = "Database has been compacted successfully !";
                 break;
             case "views":
-                database_command += " cozy-monitor compact-all-views 2>&1";
+                database_command += " views";
                 okMessage = "Database views have been compacted successfully !";
                 break;
             case "cleanup":
-                database_command += " cozy-monitor cleanup  2>&1";
+                database_command += " cleanup";
                 okMessage = "Database has been cleaned up successfully !";
                 break;
             default:
@@ -195,7 +212,7 @@ module.exports.database_maintenance = (req, res) => {
         };
     }
 
-    console.log("module.exports.database_maintenance:", database_command);
+    console.log("module.exports.database_maintenance:database_command:", database_command);
 
     var exec = require('child_process').exec,
         child;
