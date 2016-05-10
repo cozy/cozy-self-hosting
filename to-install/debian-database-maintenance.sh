@@ -11,4 +11,5 @@ else
 	echo "unknown command..."
 	exit 1
 fi
-exit 0
+
+exit $?
