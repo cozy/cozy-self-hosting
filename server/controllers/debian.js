@@ -170,3 +170,44 @@ module.exports.host_reboot = (req, res) => {
         res.status(500).send({ message: 'This host is not self-hosted, could not reboot it !' });
     }
 };
+
+module.exports.database_maintenance = (req, res) => {
+    console.log("database_maintenance:option:" + req.params.option);
+    var database_command = "sudo";
+    var okMessage = "";
+
+    if (typeof req.params.option !== 'undefined') {
+        switch (req.params.option) {
+            case "compact":
+                database_command += " cozy-monitor compact 2>&1";
+                okMessage = "Database has been compacted successfully !";
+                break;
+            case "views":
+                database_command += " cozy-monitor compact-all-views 2>&1";
+                okMessage = "Database views have been compacted successfully !";
+                break;
+            case "cleanup":
+                database_command += " cozy-monitor cleanup  2>&1";
+                okMessage = "Database has been cleaned up successfully !";
+                break;
+            default:
+                res.status(500).send({ message: 'Error : unknown database option "' + req.params.option + '"' });
+        };
+    }
+
+    console.log("module.exports.database_maintenance:", database_command);
+
+    var exec = require('child_process').exec,
+        child;
+
+    child = exec(database_command, function (error, stdout, stderr) {
+        console.log('stdout: ' + stdout);
+        console.log('stderr: ' + stderr);
+        if (error !== null) {
+            console.log('exec error: ' + error);
+            res.status(500).send({ message: 'Error while executing database maintenance : ' + stdout });
+        } else {
+            res.status(200).send({ message: okMessage });
+        }
+    });
+};

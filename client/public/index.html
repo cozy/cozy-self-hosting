@@ -27,12 +27,12 @@
         <![endif]-->
 
 	<div id="content">
-        <div class="well">Self Hosting</div>
+        <div class="well well-cozy">Self Hosting</div>
 
 		<div id="div-status-ko" class="alert alert-danger" role="alert"></div>
 		<div id="div-status-ok" class="alert alert-success" role="alert"></div>
 
-		<div class="panel panel-info">
+		<div class="panel">
 			<div class="panel-heading">FQDN Config</div>
 			<div class="panel-body">
 				<div id="div-fqdn">
@@ -50,9 +50,22 @@
 			</div>
 		</div>
 
-<br /><br /><br />
+		<br />
 
-		<div  id="button-halt-reboot-div" class="panel panel-info">
+		<div  id="database-maintenance-div" class="panel">
+			<div class="panel-heading">Database Maintenance</div>
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-md-4"><a id="button-db-compact" class="btn btn-lg btn-info" title="">Compact</a></div>
+					<div class="col-md-4"><a id="button-db-compact-views" class="btn btn-lg btn-info" title="">Compact all views</a></div>
+					<div class="col-md-4"><a id="button-db-cleanup" class="btn btn-lg btn-info" title="">Cleanup</a></div>
+				</div>
+			</div>
+		</div>
+
+		<br />
+
+		<div  id="button-halt-reboot-div" class="panel">
 			<div class="panel-heading">Shutdown & Reboot</div>
 			<div class="panel-body">
 				<div class="row">

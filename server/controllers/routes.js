@@ -15,6 +15,9 @@ module.exports = {
   },
   'debian/host/isvps': {
     get: debian.is_vps
+  },
+  'debian/database/:option': {
+    get: debian.database_maintenance
   }
 
 };

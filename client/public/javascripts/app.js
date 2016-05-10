@@ -196,6 +196,15 @@ var show_halt_reboot_buttons = function() {
     });
 };
 
+var database_maintenance = function(option) {
+	var url = "./debian/database/"+option;
+
+    $.get(url, function(data) {
+        $("#div-status-ko").hide();
+        $("#div-status-ok").html(data.message).show();
+    });
+};
+
 var Application = {
   initialize: function () {
 	  show_halt_reboot_buttons();
@@ -205,6 +214,15 @@ var Application = {
       });
       $("#button-reconfigure").click(function() {
           save_fqdn();
+      });
+      $("#button-db-compact").click(function() {
+          database_maintenance("compact");
+      });
+      $("#button-db-compact-views").click(function() {
+          database_maintenance("views");
+      });
+      $("#button-db-cleanup").click(function() {
+          database_maintenance("cleanup");
       });
 
 	  $("#button-halt").confirmation({
