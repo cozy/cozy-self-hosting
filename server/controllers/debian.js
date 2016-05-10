@@ -222,7 +222,7 @@ module.exports.database_maintenance = (req, res) => {
         console.log('stderr: ' + stderr);
         if (error !== null) {
             console.log('exec error: ' + error);
-            res.status(500).send({ message: 'Error while executing database maintenance : ' + stdout });
+            res.status(500).send({ message: 'Error while executing database maintenance operation : ' + stderr });
         } else {
             res.status(200).send({ message: okMessage });
         }
