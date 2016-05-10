@@ -1,9 +1,14 @@
 #!/bin/bash
 
-if pidof -x "$0" >/dev/null; then
-    echo "A database maintenance is already running, please try again later."
-    exit 1
-fi
+for pid in $(pidof -x $0); do
+    if [ $pid != $$ ]; then
+	    echo "A database maintenance is already running, please try again later." 1>&2
+	    exit 1
+    fi
+done
+
+sleep 20
+
 
 if [[ "$1" == "compact" ]]; then
 	cozy-monitor compact
@@ -12,7 +17,7 @@ elif [[ "$1" == "views" ]]; then
 elif [[ "$1" == "cleanup" ]]; then
 	cozy-monitor cleanup
 else
-	echo "unknown command..."
+	echo "unknown command..." 1>&2
 	exit 1
 fi
 
