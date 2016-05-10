@@ -48,21 +48,28 @@ module.exports.update_fqdn = (req, res) => {
 
     // Check if fqdn param exist & return an error if not
     if (!params.fqdn) {
-
         res.status(400).send({ message: "missing parameters" });
     } else {
-        // Exec reconfigure of package
-        var reconfigure_command = 'sudo ' + reconfigure_script + ' "' + params.fqdn + '" > /tmp/debian-reconfigure-cozy-domain.txt';
-        console.log(reconfigure_command);
-        child = exec(reconfigure_command, function (error, stdout, stderr) {
-            console.log('stdout: ' + stdout);
-            console.log('stderr: ' + stderr);
-            if (error !== null) {
-                console.log('exec error: ' + error);
+
+        // check script existence
+        fs.access(reconfigure_script, fs.X_OK, function (err) {
+            if (!err) {
+                // Exec reconfigure of package
+                var reconfigure_command = 'sudo ' + reconfigure_script + ' "' + params.fqdn + '" > /tmp/debian-reconfigure-cozy-domain.txt';
+                console.log(reconfigure_command);
+                child = exec(reconfigure_command, function (error, stdout, stderr) {
+                    console.log('stdout: ' + stdout);
+                    console.log('stderr: ' + stderr);
+                    if (error !== null) {
+                        console.log('exec error: ' + error);
+                    }
+                });
+
+                res.status(200).send({ message: 'I reconfigure your cozy with: ' + params.fqdn });
+            } else {
+                res.status(500).send({ message: 'The script "' + reconfigure_script + '" does not exist, is the app correctly installed ?' });
             }
         });
-
-        res.status(200).send({ message: 'I reconfigure your cozy with: ' + params.fqdn });
     }
 };
 
@@ -102,6 +109,7 @@ module.exports.host_halt = (req, res) => {
         }
         console.log('Reconfigure script: ' + halt_script);
 
+        // check script existence
         fs.access(halt_script, fs.X_OK, function (err) {
             if (!err) {
                 var halt_command = 'sudo ' + halt_script + ' > /dev/null';
@@ -148,6 +156,7 @@ module.exports.host_reboot = (req, res) => {
         }
         console.log('Reconfigure script: ' + reboot_script);
 
+        // check script existence
         fs.access(reboot_script, fs.X_OK, function (err) {
             if (!err) {
                 var reboot_command = 'sudo ' + reboot_script + ' > /dev/null';
@@ -191,40 +200,48 @@ module.exports.database_maintenance = (req, res) => {
     }
     console.log('Reconfigure script: ' + database_script);
 
-    database_command += database_script;
-
-    if (typeof req.params.option !== 'undefined') {
-        switch (req.params.option) {
-            case "compact":
-                database_command += " compact";
-                okMessage = "Database has been compacted successfully !";
-                break;
-            case "views":
-                database_command += " views";
-                okMessage = "Database views have been compacted successfully !";
-                break;
-            case "cleanup":
-                database_command += " cleanup";
-                okMessage = "Database has been cleaned up successfully !";
-                break;
-            default:
-                res.status(500).send({ message: 'Error : unknown database option "' + req.params.option + '"' });
-        };
-    }
-
-    console.log("module.exports.database_maintenance:database_command:", database_command);
-
     var exec = require('child_process').exec,
         child;
 
-    child = exec(database_command, function (error, stdout, stderr) {
-        console.log('stdout: ' + stdout);
-        console.log('stderr: ' + stderr);
-        if (error !== null) {
-            console.log('exec error: ' + error);
-            res.status(500).send({ message: 'Error while executing database maintenance operation : ' + stderr });
+    // check script existence
+    fs.access(database_script, fs.X_OK, function (err) {
+        if (!err) {
+
+            database_command += database_script;
+
+            if (typeof req.params.option !== 'undefined') {
+                switch (req.params.option) {
+                    case "compact":
+                        database_command += " compact";
+                        okMessage = "Database has been compacted successfully !";
+                        break;
+                    case "views":
+                        database_command += " views";
+                        okMessage = "Database views have been compacted successfully !";
+                        break;
+                    case "cleanup":
+                        database_command += " cleanup";
+                        okMessage = "Database has been cleaned up successfully !";
+                        break;
+                    default:
+                        res.status(500).send({ message: 'Error : unknown database option "' + req.params.option + '"' });
+                };
+            }
+
+            console.log("module.exports.database_maintenance:database_command:", database_command);
+
+            child = exec(database_command, function (error, stdout, stderr) {
+                console.log('stdout: ' + stdout);
+                console.log('stderr: ' + stderr);
+                if (error !== null) {
+                    console.log('exec error: ' + error);
+                    res.status(500).send({ message: 'Error while executing database maintenance operation : ' + stderr });
+                } else {
+                    res.status(200).send({ message: okMessage });
+                }
+            });
         } else {
-            res.status(200).send({ message: okMessage });
+            res.status(500).send({ message: 'The script "' + database_script + '" does not exist, is the app correctly installed ?' });
         }
     });
 };
