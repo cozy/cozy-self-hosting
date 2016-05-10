@@ -199,6 +199,8 @@ var show_halt_reboot_buttons = function() {
 var database_maintenance = function(option) {
 	var url = "./debian/database/"+option;
 
+	$("#div-status-ok").html('Database maintenance operation "' + option + '" is running...').show();
+
     $.get(url, function(data) {
         $("#div-status-ko").hide();
         $("#div-status-ok").html(data.message).show();
