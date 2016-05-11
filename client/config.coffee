@@ -26,6 +26,8 @@ exports.config =
           'vendor/javascripts/backbone-1.1.2.min.js',
           'vendor/javascripts/backbone-mediator.js',
           'vendor/javascripts/bootstrap-3.1.1.min.js',
+          'vendor/javascripts/bootstrap-tooltip.js',
+          'vendor/javascripts/bootstrap-confirmation.js'
         ]
 
     stylesheets:

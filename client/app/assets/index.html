@@ -26,20 +26,55 @@
         <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
         <![endif]-->
 
-        <div id="content">
-        <h2>Self hosting</h2>
-          <div id="div-fqdn">
-            <input id="input-fqdn" type="text" id="fqdn" name="fqdn">
-          </div>
-          <div id="div-refresh">
-            <input type="button" id="button-refresh" class="btn btn-lg btn-default" value="Refresh information from Cozy">
-          </div>
-          <div id="div-reconfigure">
-            <input type="button" id="button-reconfigure" class="btn btn-lg btn-danger" value="Reconfigure my Cozy">
-          </div>
-          <div id="div-status-ko" class="alert alert-danger" role="alert"></div>
-          <div id="div-status-ok" class="alert alert-success" role="alert"></div>
-        </div>
+	<div id="content">
+
+		<div id="div-status-ko" class="alert alert-danger" role="alert"></div>
+		<div id="div-status-ok" class="alert alert-success" role="alert"></div>
+
+		<div class="panel">
+			<div class="panel-heading">FQDN Config</div>
+			<div class="panel-body">
+				<div id="div-fqdn">
+					<div class="input-group">
+						<span class="input-group-addon" id="basic-addon1">Current FQDN</span>
+						<input id="input-fqdn" class="form-control"  type="text" id="fqdn" name="fqdn">
+					</div>
+				</div>
+				<div id="div-refresh">
+					<input type="button" id="button-refresh" class="btn btn-lg btn-default" value="Refresh information from Cozy">
+				</div>
+				<div id="div-reconfigure">
+					<input type="button" id="button-reconfigure" class="btn btn-lg btn-danger" value="Reconfigure my Cozy">
+				</div>
+			</div>
+		</div>
+
+		<br />
+
+		<div  id="database-maintenance-div" class="panel">
+			<div class="panel-heading">Database Operations</div>
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-md-4"><a id="button-db-compact" class="btn btn-lg btn-info" title="">Compact</a></div>
+					<div class="col-md-4"><a id="button-db-compact-views" class="btn btn-lg btn-info" title="">Compact all views</a></div>
+					<div class="col-md-4"><a id="button-db-cleanup" class="btn btn-lg btn-info" title="">Cleanup</a></div>
+				</div>
+			</div>
+		</div>
+
+		<br />
+
+		<div  id="button-halt-reboot-div" class="panel">
+			<div class="panel-heading">Shutdown & Reboot</div>
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-md-6"><a id="button-halt" class="btn btn-lg btn-danger" title="">Shutdown the host</a></div>
+					<div class="col-md-6"><a id="button-reboot" class="btn btn-lg btn-warning" title="">Reboot the host</a></div>
+				</div>
+			</div>
+		</div>
+
+	</div><!-- id="content" -->
 
         <script src="javascripts/vendor.js"></script>
         <script src="javascripts/app.js" onload="require('initialize');"></script>

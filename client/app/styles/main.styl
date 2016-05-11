@@ -43,7 +43,7 @@ p
 
 /* Style */
 #content
-  width: 305px
+  width: 90%
   text-align: center
   margin: 0 auto
   margin-top: 40px
@@ -72,8 +72,27 @@ h1
 #div-fqdn, #div-refresh, #div-reconfigure, #div-status-ok, #div-status-ko
   margin-top: 10px
 
-#input-fqdn, #button-refresh, #button-reconfigure
+#input-fqdn, #button-refresh, #button-reconfigure, #button-halt, #button-reboot, #button-db-compact, #button-db-compact-views, #button-db-cleanup
   width: 100%
 
 #div-status-ok, #div-status-ko
   display: none
+
+#button-halt-reboot-div
+  display : none;
+
+.panel
+  border-color: #32363f
+
+.panel .panel-heading
+  color: #c8d5df
+  background-color: #32363f
+  border-color: #32363f
+
+.panel-heading
+  font-size: 1.1em
+
+.well-cozy
+  color: #c8d5df
+  background: #32363f
+  font-size: 1.3em
