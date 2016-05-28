@@ -1,28 +1,122 @@
 const fs = require('fs');
 const CozyInstance = require('../models/cozyinstance');
 
+const config_filename = '/etc/cozy/self-hosting.json';
+
+// default scripts list
+var defaultScriptsList = {
+	reconfigure_script: '/usr/local/sbin/debian-reconfigure-cozy-domain.sh',
+	halt_script: '/usr/local/sbin/debian-halt.sh',
+	reboot_script: '/usr/local/sbin/debian-reboot.sh',
+	database_script: '/usr/local/sbin/debian-database-maintenance.sh'
+};
+var scriptsList = defaultScriptsList;
+
+var updateScriptsListFromConfig = function () {
+	var scriptsKeys = Object.keys(scriptsList);
+	console.log('updateScriptsListFromConfig:Config filename: ', config_filename);
+	//console.log("updateScriptsListFromConfig:before updating with config_filename:", scriptsList);
+
+	// check script existence
+	try {
+		fs.accessSync(config_filename, fs.R_OK);
+		// config file is present, proceed to update scripts list
+		const config = require(config_filename);
+
+		for (var i=0; i<scriptsKeys.length; i++) {
+			/*
+			console.log("updateScriptsListFromConfig:scriptsKeys[i]:",scriptsKeys[i]) ;
+			console.log("updateScriptsListFromConfig:scriptsList[scriptsKeys[i]]:",scriptsList[scriptsKeys[i]]) ;
+			console.log("updateScriptsListFromConfig:config[scriptsKeys[i]]:",config[scriptsKeys[i]]) ;
+			*/
+
+			// Try to load config from config_filename
+			try {
+				if (typeof config[scriptsKeys[i]] !== 'undefined') {
+					scriptsList[scriptsKeys[i]] = config[scriptsKeys[i]];
+				}
+
+			} catch (e) {
+				console.log('updateScriptsListFromConfig:missing config filename: ' + config_filename + ' or "'+scriptsNames[i]+'" parameter is not defined.');
+			}
+		}
+		console.log("updateScriptsListFromConfig:after updating with config_filename:",scriptsList);
+	}
+	catch (e) {
+		scriptsList = defaultScriptsList;
+		throw('Config file "'+config_filename+'" not found !');
+	}
+};
+
+var checkAllScriptsExist = function (callback, status) {
+	var scriptsKeys = Object.keys(scriptsList);
+	var globalStatus = 0;
+	var errors = [];
+
+	if (scriptsKeys.length > 0) {
+		for (var i=0; i<scriptsKeys.length; i++) {
+			try {
+				fs.accessSync(scriptsList[scriptsKeys[i]], fs.X_OK);
+				globalStatus++;
+			}
+			catch (e) {
+				console.log ("checkAllScriptsExist:", e);
+				errors.push( 'Script file "'+scriptsList[scriptsKeys[i]]+'" not found (parameter "'+scriptsKeys[i]+'") !' );
+			}
+		}
+
+		globalStatus = (globalStatus/scriptsKeys.length)*100;
+	}
+	callback(errors.length ? errors : null, globalStatus);
+};
+
+
 module.exports.get_fqdn = (req, res) => {
-    // Get domain in CouchDB
-    CozyInstance.all((err, results) => {
-        if (err) {
-            console.log("module.exports.get_fqdn:ERR:", err);
-            res.status(500).send({ message: "Unable to get the current FQDN" });
-        } else {
-            console.log("module.exports.get_fqdn:results:", results);
-            if (typeof results !== 'undefined') {
-                const domain = results[0].domain;
-                console.log("module.exports.get_fqdn:OK:", domain);
-                if (typeof domain !== 'undefined') {
-                    res.status(200).send(domain);
-                } else {
-                    res.status(500).send({ message: "Unable to get the current FQDN : cozy domain is undefined" });
-                }
-            } else {
-                console.log("module.exports.get_fqdn:ERR:error");
-                res.status(500).send({ message: "Unable to get the current FQDN" });
-            }
-        }
-    });
+
+	var errMessage = "Oops, it looks like the app is not correctly installed : <br />";
+
+	try {
+		updateScriptsListFromConfig();
+		console.log("scripts updated !");
+	}
+	catch (err) {
+			console.log("updateScriptsListFromConfig:error:", err);
+			errMessage += err + "<br />";
+	}
+
+	checkAllScriptsExist(function (err, status) {
+		console.log("checkAllScriptsExist:status:", status);
+		if (err || status !== 100) {
+			for (var i=0; i<err.length; i++) {
+				errMessage += err[i] + "<br />";
+			}
+			errMessage += "You should probably check the config file "+config_filename;
+			res.status(500).send({ message: errMessage });
+
+		} else {
+			// Get domain in CouchDB
+			CozyInstance.all((err, results) => {
+				if (err) {
+					console.log("module.exports.get_fqdn:ERR:", err);
+					res.status(500).send({ message: "Unable to get the current FQDN" });
+				} else {
+					//console.log("module.exports.get_fqdn:results:", results);
+					if (typeof results !== 'undefined') {
+						const domain = results[0].domain;
+						console.log("module.exports.get_fqdn:OK:", domain);
+						if (typeof domain !== 'undefined') {
+							res.status(200).send(domain);
+						} else {
+							res.status(500).send({ message: "Unable to get the current FQDN : cozy domain is undefined" });
+						}
+					} else {
+						console.log("module.exports.get_fqdn:ERR:error");
+						res.status(500).send({ message: "Unable to get the current FQDN" });
+					}
+				}
+			});
+		}
+	});
 };
 
 module.exports.update_fqdn = (req, res) => {
@@ -31,7 +125,6 @@ module.exports.update_fqdn = (req, res) => {
         child;
 
     const params = req.body;
-    const config_filename = '/etc/cozy/self-hosting.json';
     var reconfigure_script = '/usr/local/sbin/debian-reconfigure-cozy-domain.sh';
 
     // Try to load config from reconfigure_script
@@ -94,8 +187,7 @@ module.exports.host_halt = (req, res) => {
         var exec = require('child_process').exec,
             child;
 
-        const config_filename = '/etc/cozy/self-hosting.json';
-        var halt_script = '/usr/local/sbin/debian-halt.sh';
+		var halt_script = '/usr/local/sbin/debian-halt.sh';
 
         // Try to load config from config file
         try {
@@ -141,7 +233,6 @@ module.exports.host_reboot = (req, res) => {
         var exec = require('child_process').exec,
             child;
 
-        const config_filename = '/etc/cozy/self-hosting.json';
         var reboot_script = '/usr/local/sbin/debian-reboot.sh';
 
         // Try to load config from config file
@@ -185,7 +276,6 @@ module.exports.database_maintenance = (req, res) => {
     var database_command = "sudo ";
     var okMessage = "";
 
-    const config_filename = '/etc/cozy/self-hosting.json';
     var database_script = '/usr/local/sbin/debian-database-maintenance.sh';
 
     // Try to load config from config file
