@@ -292,7 +292,7 @@ $(function () {
 });
 
 require.register("___globals___", function(exports, require, module) {
-
+  
 });})();require('___globals___');
 
 

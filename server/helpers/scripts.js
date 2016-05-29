@@ -45,7 +45,7 @@ module.exports.updateScriptsListFromConfig = function() {
 	}
 	catch (e) {
 		scriptsList = defaultScriptsList;
-		throw('Config file "'+config_filename+'" not found !');
+		throw('Config file "'+config_filename+'" not found, using default values !');
 	}
 	return scriptsList;
 };

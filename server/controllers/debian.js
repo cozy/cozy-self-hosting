@@ -24,8 +24,8 @@ var executeCommand = function (command, callback) {
 
 module.exports.run_controls = (req, res) => {
 
-	var errMessage = "Oops, it looks like the app is not correctly installed : <br />";
-	var okMessage = "Good, all scripts are installed.";
+	var errMessage = 'Oops, it looks like the app is not correctly installed (did you run to-install/install-debian-scripts.sh ?) : <br />';
+	var okMessage = 'Good, all scripts are installed.';
 
 	try {
 		scriptsList = scriptsHelpers.updateScriptsListFromConfig();
