@@ -152,7 +152,6 @@ var __makeRelativeRequire = function(require, mappings, pref) {
 };
 require.register("application.js", function(exports, require, module) {
 
-
 var run_controls = function() {
     // Get fqdn from CozyDB
     $.get("./debian/controls")
@@ -262,8 +261,6 @@ var database_maintenance = function(option) {
         $("#div-status-ok").html(data.message).show();
     });
 };
-
-
 
 var Application = {
   initialize: function () {
