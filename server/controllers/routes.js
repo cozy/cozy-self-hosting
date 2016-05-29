@@ -16,6 +16,9 @@ module.exports = {
   'debian/host/isvps': {
     get: debian.is_vps
   },
+  'debian/controls': {
+    get: debian.run_controls
+  },
   'debian/database/:option': {
     get: debian.database_maintenance
   }
