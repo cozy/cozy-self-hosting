@@ -13,14 +13,31 @@ var defaultScriptsList = {
 
 var scriptsList = defaultScriptsList;
 
+// Check il a file exists. Works in both Node 0.10 and greater
+var fileExistsSync = function (path, mode) {
+  if (typeof fs.accessSync === 'function') {
+	if (typeof(mode)==='undefined') mode = fs.F_OK;
+    try {
+      fs.accessSync(path, mode);
+      return true;
+    } catch (e) {
+      return false;
+    }
+
+  } else {
+    return fs.existsSync(path);
+  }
+}
+
+
 module.exports.updateScriptsListFromConfig = function() {
 	var scriptsKeys = Object.keys(scriptsList);
 	console.log('updateScriptsListFromConfig:Config filename: ', config_filename);
 	//console.log("updateScriptsListFromConfig:before updating with config_filename:", scriptsList);
 
 	// check script existence
-	try {
-		fs.accessSync(config_filename, fs.R_OK);
+
+	if (fileExistsSync (config_filename, fs.R_OK)) {
 		// config file is present, proceed to update scripts list
 		const config = require(config_filename);
 
@@ -43,7 +60,7 @@ module.exports.updateScriptsListFromConfig = function() {
 		}
 		console.log("updateScriptsListFromConfig:after updating with config_filename:",scriptsList);
 	}
-	catch (e) {
+	else {
 		scriptsList = defaultScriptsList;
 		throw('Config file "'+config_filename+'" not found, using default values !');
 	}
@@ -58,16 +75,14 @@ module.exports.checkAllScriptsExist = function(callback, status) {
 
 	if (scriptsKeys.length > 0) {
 		for (var i=0; i<scriptsKeys.length; i++) {
-			try {
-				fs.accessSync(scriptsList[scriptsKeys[i]], fs.X_OK);
+			if (fileExistsSync (scriptsList[scriptsKeys[i]], fs.X_OK)) {
 				globalStatus++;
 			}
-			catch (e) {
+			else {
 				if (firstError) {
 					errors.push( 'You should probably check the config file '+config_filename );
 					firstError = false
 				}
-				console.log ("checkAllScriptsExist:", e);
 				errors.push( 'Script file "'+scriptsList[scriptsKeys[i]]+'" not found (parameter "'+scriptsKeys[i]+'") !' );
 			}
 		}
