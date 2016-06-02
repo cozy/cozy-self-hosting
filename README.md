@@ -15,8 +15,8 @@ own one too.
 
 ## Installation
 
-This app need a manual step if it has not been pre-installed on the host by cozy team.
-To finalize the installation, you need to open an ssh session to your host, and execute the final installation script as below :
+This app needs a manual step if it hasn't been pre-installed on the host by cozy team.
+To finalize the installation, you need to open a ssh session to your host, and execute the final installation script as below :
 
 ```
 cd /usr/local/cozy/apps/self-hosting/to-install
