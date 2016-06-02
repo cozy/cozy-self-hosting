@@ -13,6 +13,18 @@ with a new experience. You can install Cozy on your own hardware where no one
 profiles you. You install only the applications you want. You can build your
 own one too.
 
+## Installation
+
+This app need a manual step if it has not been pre-installed on the host by cozy team.
+To finalize the installation, you need to open an ssh session to your host, and execute the final installation script as below :
+
+```
+cd /usr/local/cozy/apps/self-hosting/to-install
+sudo chmod u+x install-debian-scripts.sh
+sudo ./install-debian-scripts.sh
+```
+
+
 ## Community
 
 You can reach the Cozy community via various support:
