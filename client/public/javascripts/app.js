@@ -151,12 +151,66 @@ var __makeRelativeRequire = function(require, mappings, pref) {
   }
 };
 require.register("application.js", function(exports, require, module) {
+
+var run_controls = function() {
+    // Get fqdn from CozyDB
+    $.get("./debian/controls")
+		.done(function( data ) {
+			// update view
+			$("#main-buttons").show();
+
+			show_halt_reboot_buttons();
+
+			refresh_fqdn();
+			$("#button-refresh").click(function() {
+			  refresh_fqdn();
+			});
+			$("#button-reconfigure").click(function() {
+			  save_fqdn();
+			});
+			$("#button-db-compact").click(function() {
+			  database_maintenance("compact");
+			});
+			$("#button-db-compact-views").click(function() {
+			  database_maintenance("views");
+			});
+			$("#button-db-cleanup").click(function() {
+			  database_maintenance("cleanup");
+			});
+
+			$("#button-halt").confirmation({
+			"title": "Do you really want to halt the host ?",
+			"btnOkClass": "btn-danger",
+			"btnCancelClass": "btn-info",
+			"btnOkLabel": "SHUTDOWN",
+			"btnCancelLabel": "CANCEL",
+			"placement": "bottom",
+			"popout": true,
+			"singleton": true,
+			"onConfirm": host_halt
+			});
+			$("#button-reboot").confirmation({
+			"title": "Do you really want to reboot the host ?",
+			"btnOkClass": "btn-warning",
+			"btnCancelClass": "btn-info",
+			"btnOkLabel": "REBOOT",
+			"btnCancelLabel": "CANCEL",
+			"placement": "bottom",
+			"popout": true,
+			"singleton": true,
+			"onConfirm": host_reboot
+			});
+		});
+};
+
 var refresh_fqdn = function() {
     // Get fqdn from CozyDB
-    $.get("./debian/fqdn", function(data) {
-        // And update view
-        $("#input-fqdn").val(data);
-    });
+    $.get("./debian/fqdn")
+		.done(function( data ) {
+			$("#input-fqdn").val(data);
+		})
+		.fail(function( data ) {
+		});
 };
 
 var save_fqdn = function() {
@@ -210,46 +264,7 @@ var database_maintenance = function(option) {
 
 var Application = {
   initialize: function () {
-	  show_halt_reboot_buttons();
-      refresh_fqdn();
-      $("#button-refresh").click(function() {
-          refresh_fqdn();
-      });
-      $("#button-reconfigure").click(function() {
-          save_fqdn();
-      });
-      $("#button-db-compact").click(function() {
-          database_maintenance("compact");
-      });
-      $("#button-db-compact-views").click(function() {
-          database_maintenance("views");
-      });
-      $("#button-db-cleanup").click(function() {
-          database_maintenance("cleanup");
-      });
-
-	  $("#button-halt").confirmation({
-		"title": "Do you really want to halt the host ?",
-		"btnOkClass": "btn-danger",
-		"btnCancelClass": "btn-info",
-		"btnOkLabel": "SHUTDOWN",
-		"btnCancelLabel": "CANCEL",
-		"placement": "bottom",
-		"popout": true,
-		"singleton": true,
-		"onConfirm": host_halt
-	  });
-	  $("#button-reboot").confirmation({
-		"title": "Do you really want to reboot the host ?",
-		"btnOkClass": "btn-warning",
-		"btnCancelClass": "btn-info",
-		"btnOkLabel": "REBOOT",
-		"btnCancelLabel": "CANCEL",
-		"placement": "bottom",
-		"popout": true,
-		"singleton": true,
-		"onConfirm": host_reboot
-	  });
+	  run_controls();
 
       $(document).ajaxError(function(event, jqxhr, settings, thrownError) {
         $("#div-status-ok").hide();
