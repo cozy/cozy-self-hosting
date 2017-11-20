@@ -2,6 +2,11 @@
 
 Cozy Self Hosting is a application to help you to manage your self hosted Cozy.
 
+## Deprecation warning
+
+:warning: This tool is intended to manage the old, now deprecated, Node.js based, Cozy V2. It is not maintained.
+
+
 ## What is Cozy?
 
 ![Cozy Logo](https://raw.github.com/cozy/cozy-setup/gh-pages/assets/images/happycloud.png)
